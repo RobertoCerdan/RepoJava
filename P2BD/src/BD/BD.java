@@ -16,13 +16,13 @@ import java.sql.DriverManager;
  */
 public class BD {
     
-    private Connection con;
+    private static Connection con;
 
     public BD(Connection con) {
         this.con = con;
     }
     
-    public void conectar(){
+    public static void conectar(){
         try{
             Class.forName("com.mysql.jdbc.Driver");
             String bd = "bd";
@@ -41,11 +41,11 @@ public class BD {
         }
     }
     
-    public Connection getConnection(){
+    public static Connection getConnection(){
         return con;
     }
     
-    public void desconectar(){
+    public static void desconectar(){
        try
        {
             con.close();

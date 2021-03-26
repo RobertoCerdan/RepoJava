@@ -8,8 +8,14 @@ package BD;
 import Modelo.Evento;
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,41 +23,82 @@ import java.time.ZoneId;
  */
 public class GestionEventos {
     
-    private Connection con;
+    private static Connection con;
 
     public GestionEventos(Connection con) {
         this.con = con;
     }
     
-    public void insertarEvento(String nombre, String lugar, LocalDate fecha, LocalTime hInicio, LocalTime hFin, int aforo) throws SQLException{
+    public static ArrayList<String> obtenerListaEventos(){
+  
+        try {
+            PreparedStatement ps = con.prepareStatement("SELECT NOMBRE FROM EVENTOS;");
+            
+            ResultSet r = ps.executeQuery();
+
+            int contador = 0;            
+            ArrayList<String> eventos = null;
+            if(r.next()){
+                eventos = new ArrayList();
+                while(r.next()){
+                    eventos.add(r.getString(contador));
+                }
+            }
+            return eventos;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage() + "fallooooo");
+            return null;
+        }
+    }
+    
+    
+    
+    public static boolean existeEvento(String nombre){
+        try {
+            PreparedStatement ps = con.prepareStatement("SELECT 'X' FROM EVENTOS WHERE UPPER(NOMBRE)=UPPER(?);");
+            ps.setString(1, nombre);
+            
+            ResultSet resultado = ps.executeQuery();
+            
+            boolean existe = false;
+            if(resultado.next())
+                existe = true;
+            
+            return existe;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
+    }
+    
+    public static void insertarEvento(Evento e) throws SQLException{
         
-        String plantilla = "INSERT INTO eventos VALUES (?, ?, ?, ? , ?, ?);";
+        String plantilla = "INSERT INTO eventos VALUES (?, ?, ?, ?, ?, ?);";
         PreparedStatement ps = con.prepareStatement(plantilla);
-        ps.setString(1, nombre);
-        ps.setString(2, lugar);
-        ps.setString(3, String.valueOf(fecha));
-        ps.setString(4, String.valueOf(hInicio));
-        ps.setString(5, String.valueOf(hFin));
-        ps.setString(6, String.valueOf(aforo));
+        ps.setString(1, e.getNombre());
+        ps.setString(2, e.getLugar());
+        ps.setDate(3, Date.valueOf(e.getFecha()));
+        ps.setTime(4, Time.valueOf(e.gethInicio()));
+        ps.setTime(5, Time.valueOf(e.gethFin()));
+        ps.setInt(6, e.getAforo());
+        
         
         int n = ps.executeUpdate();
         
-        if(n>1)
-            System.out.println("Se han borrado mas de 1 registro");
+        
         
 
     }
     
-    
-    public void cancelarEvento(String nombre) throws SQLException{
+    public static void cancelarEvento(String nombre) throws SQLException{
         
         String plantilla = "DELETE FROM eventos WHERE nombre=?;";
         PreparedStatement ps = con.prepareStatement(plantilla);
-        ps.setString(0, nombre);
+        ps.setString(1, nombre);
         
         
         int n = ps.executeUpdate();
-        
+        System.out.println(n);
         if(n>1)
             System.out.println("Se ha cancelado mas de 1 registro");
         
@@ -59,18 +106,20 @@ public class GestionEventos {
 
     }
     
-    public void editarEvento(String nombre, String lugar, LocalDate fecha, LocalTime hInicio, LocalTime hFin, int aforo) throws SQLException{
+    public static void editarEvento(Evento e) throws SQLException{
         
-        String plantilla = "UPDATE eventos SET (nombre, lugar, fecha, hInicio, hFin, aforo) = (?, ?, ?, ? , ?, ?);"
-                + "WHERE nombre=?";
+        String plantilla = "UPDATE eventos SET lugar=?, fecha=?, hInicio=?, hFin=?, aforo=?"
+                + " WHERE nombre=?;";
         PreparedStatement ps = con.prepareStatement(plantilla);
-        ps.setString(1, nombre);
-        ps.setString(2, lugar);
-        ps.setString(3, String.valueOf(fecha));
-        ps.setString(4, String.valueOf(hInicio));
-        ps.setString(5, String.valueOf(hFin));
-        ps.setString(6, String.valueOf(aforo));
         
+        ps.setString(1, e.getLugar());
+        ps.setDate(2, Date.valueOf(e.getFecha()));
+        ps.setTime(3, Time.valueOf(e.gethInicio()));
+        ps.setTime(4, Time.valueOf(e.gethFin()));
+        ps.setInt(5, e.getAforo());
+        ps.setString(6, e.getNombre());
+        
+        System.out.println(ps);
         int n = ps.executeUpdate();
         
         if(n>1)
@@ -79,7 +128,7 @@ public class GestionEventos {
 
     }
     
-    public Evento mostrarEvento(String nombre) throws SQLException{
+    public static Evento obtenerEvento(String nombre) throws SQLException{
         
         String plantilla = "SELECT * FROM eventos WHERE UPPER(nombre)=UPPER(?)";
         PreparedStatement ps = con.prepareStatement(plantilla);
@@ -88,21 +137,34 @@ public class GestionEventos {
         
         ResultSet r = ps.executeQuery();
         
+        Evento e = null;
+        
         while(r.next()){
-            java.util.Date fecha = r.getDate("fecha");
+            java.sql.Date f = r.getDate("fecha");
+            System.out.println(f);
+            //DateFormatter formatter = DateFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate fecha = f.toLocalDate();
+            Time horaInicio = r.getTime("hInicio");
+            LocalTime hInicio = horaInicio.toLocalTime();
+            Time horaFin = r.getTime("hFin");
+            LocalTime hFin = horaFin.toLocalTime();
 
-  
-
-            String currentTime = sdf.format(fecha);
             
-            Evento e = new Evento();
+
+            
+            e = new Evento();
             e.setNombre(r.getString("nombre"));
             e.setLugar(r.getString("lugar"));
-            DateFormat.
-            e.setFecha(java.sql.Date.);
-            e.setAforo(0);
+            e.setFecha(fecha);
+            e.sethInicio(hInicio);
+            e.sethFin(hFin);
+            e.setAforo(r.getInt("aforo"));
+            
+  
             
         }
+        
+        return e;
         
 
     }

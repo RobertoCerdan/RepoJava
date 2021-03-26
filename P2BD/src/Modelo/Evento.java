@@ -4,9 +4,12 @@
  * and open the template in the editor.
  */
 package Modelo;
-
+/** @author Roberto
+ * */
+import java.sql.Array;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 /**
  *
@@ -20,8 +23,10 @@ public class Evento {
    private LocalTime hInicio;
    private LocalTime hFin;
    private int aforo;
+   private ArrayList<Persona> invitados;
 
     public Evento() {
+        invitados = new ArrayList();
     }
 
     public Evento(String nombre, String lugar, LocalDate fecha, LocalTime hInicio, LocalTime hFin, int aforo) {
@@ -31,6 +36,7 @@ public class Evento {
         this.hInicio = hInicio;
         this.hFin = hFin;
         this.aforo = aforo;
+        invitados = new ArrayList();
     }
 
     public String getNombre() {
@@ -79,6 +85,28 @@ public class Evento {
 
     public void setAforo(int aforo) {
         this.aforo = aforo;
+    }
+
+    public ArrayList<Persona> getInvitados() {
+        return invitados;
+    }
+
+    public void setInvitados(ArrayList<Persona> invitados) {
+        this.invitados = invitados;
+    }
+
+    public boolean addInvitado(Persona p){
+        if(invitados.size()!=aforo){
+            invitados.add(p);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+    public void removeInvitado(Persona p){
+        invitados.remove(p);          
     }
    
    
