@@ -12,6 +12,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -44,30 +47,35 @@ public class TablaAbogados {
     
     
     public static ArrayList<Abogado> queryAllAbogados() throws Exception{
-        BD.abrirBD();
-        con = BD.getCon();
-        PreparedStatement ps = con.prepareStatement("SELECT * FROM ABOGADOS;");
-
+            BD.abrirBD();
+            con = BD.getCon();
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM ABOGADOS;");
+            
+            
+            ResultSet r = ps.executeQuery();
+            
+            
+            
+            ArrayList<Abogado> abogados= new ArrayList();
+            Abogado a = null;
+            while(r.next()){
+                a = new Abogado();
+                a.setDni(r.getString("dni"));
+                a.setNombre(r.getString("nombre"));
+                a.setApellidos(r.getString("apellidos"));
+                a.setDir(r.getString("dir"));
+                
+                abogados.add(a);
+            }
+            
+            BD.cerrarBD();
+            
+            if(!abogados.isEmpty()){
+                return abogados;
+            }
+         
+            return null;
         
-        ResultSet r = ps.executeQuery();
-        
-        BD.cerrarBD();
-        
-        ArrayList<Abogado> abogados= new ArrayList();
-        Abogado a = null;
-        if(r.next()){
-            a = new Abogado();
-            a.setDni(r.getString("dni"));
-            a.setNombre(r.getString("nombre"));
-            a.setApellidos(r.getString("apellido"));
-            a.setDir(r.getString("dir"));
-
-            abogados.add(a);
-        }
-        if(!abogados.isEmpty()){
-            return abogados;
-        }
-        return null;
     }
     
     
@@ -81,16 +89,19 @@ public class TablaAbogados {
         
         ResultSet r = ps.executeQuery();
         
-        BD.cerrarBD();
+        
         
         Abogado a = null;
-        if(r.next()){
+        while(r.next()){
             a = new Abogado();
             a.setDni(dni);
             a.setNombre(r.getString("nombre"));
             a.setApellidos(r.getString("apellidos"));
             a.setDir(r.getString("dir"));
         }
+        
+        BD.cerrarBD();
+        
         return a;
         
     }
@@ -99,7 +110,7 @@ public class TablaAbogados {
         BD.abrirBD();
         con = BD.getCon();
         
-        PreparedStatement ps = con.prepareStatement("UPDATE ABOGADOS SET (NOMBRE=?, APELLIDOS=?, DIR=? WHERE UPPER(DNI)=?;");
+        PreparedStatement ps = con.prepareStatement("UPDATE ABOGADOS SET NOMBRE=?, APELLIDOS=?, DIR=? WHERE UPPER(DNI)=?;");
         ps.setString(1, a.getNombre());
         ps.setString(2, a.getApellidos());
         ps.setString(3, a.getDir());

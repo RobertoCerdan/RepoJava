@@ -35,10 +35,10 @@ public class TablaClientes {
         BD.cerrarBD();
         
         Cliente c = null;
-        if(r.next()){
+        while(r.next()){
             c = new Cliente();
             c.setNombre(r.getString("nombre"));
-            c.setApellidos(r.getString("apellido"));
+            c.setApellidos(r.getString("apellidos"));
             c.setEmail(r.getString("email"));
             c.setJuicios(TablaJuiciosClientes.queryJuicioByDni(r.getString("dni")));
         }
@@ -57,11 +57,11 @@ public class TablaClientes {
         BD.cerrarBD();
         
         Cliente c = null;
-        if(r.next()){
+        while(r.next()){
             c = new Cliente();
             c.setDni(dni);
             c.setNombre(r.getString("nombre"));
-            c.setApellidos(r.getString("apellido"));
+            c.setApellidos(r.getString("apellidos"));
             c.setEmail(r.getString("email"));
             c.setJuicios(TablaJuiciosClientes.queryJuicioByDni(r.getString("dni")));
         }
@@ -77,19 +77,22 @@ public class TablaClientes {
         
         ResultSet r = ps.executeQuery();
         
-        BD.cerrarBD();
         
         ArrayList<Cliente> clientes= new ArrayList();
         Cliente c = null;
-        if(r.next()){
+        while(r.next()){
             c = new Cliente();
             c.setDni(r.getString("dni"));
             c.setNombre(r.getString("nombre"));
-            c.setApellidos(r.getString("apellido"));
+            c.setApellidos(r.getString("apellidos"));
             c.setEmail(r.getString("email"));
             c.setJuicios(TablaJuiciosClientes.queryJuicioByDni(r.getString("dni")));
             clientes.add(c);
         }
+        
+        BD.cerrarBD();
+        
+        
         if(!clientes.isEmpty()){
             return clientes;
         }
@@ -100,11 +103,12 @@ public class TablaClientes {
     public static boolean insertCliente(Cliente c) throws Exception{
         BD.abrirBD();
         con = BD.getCon();
-        PreparedStatement ps = con.prepareStatement("INSERT INTO CLIENTES VALUES (?, ?, ?);");
+        PreparedStatement ps = con.prepareStatement("INSERT INTO CLIENTES VALUES (?, ?, ?, ?);");
         
-        ps.setString(1, c.getNombre());
-        ps.setString(2, c.getApellidos());
-        ps.setString(3, c.getEmail());
+        ps.setString(1, c.getDni());
+        ps.setString(2, c.getNombre());
+        ps.setString(3, c.getApellidos());
+        ps.setString(4, c.getEmail());
                
         int n = ps.executeUpdate();
         

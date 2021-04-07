@@ -14,7 +14,10 @@ import Modelo.Juicio;
 import Modelo.estadoJuicio;
 import Vista.V1;
 import Vista.VAnadirAbogado;
+import Vista.VAnadirCliente;
 import Vista.VAnadirJuicio;
+import Vista.VBorrarAbogados;
+import Vista.VEditarAbogado;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -29,8 +32,11 @@ import javax.swing.JComboBox;
  */
 public class Controlador {
     
+    public static VAnadirCliente vanadircliente;
     public static VAnadirJuicio vanadirjuicio;
     public static VAnadirAbogado vanadirabogado;
+    public static VBorrarAbogados vborrarabogado;
+    public static VEditarAbogado veditarabogado;
     public static V1 v1;
     
     
@@ -50,6 +56,22 @@ public class Controlador {
     
     public static void pedirCliente(String dni) throws Exception{
          cliente = TablaClientes.queryClienteByDni(dni);
+    }
+    
+    public static ArrayList<String> pedirDatosCliente(String dni){
+        try {
+            cliente = TablaClientes.queryClienteByDni(dni);
+            ArrayList<String> datos = new ArrayList();
+            datos.add(cliente.getDni());
+            datos.add(cliente.getNombre());
+            datos.add(cliente.getApellidos());
+            datos.add(cliente.getEmail());
+            
+            return datos;
+        } catch (Exception ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
     
     
@@ -108,6 +130,23 @@ public class Controlador {
     public static void pedirAbogado(String dni) throws Exception{
         abogado = TablaAbogados.queryAbogadoByDni(dni);
     }
+    
+    public static ArrayList<String> pedirDatosAbogado(String dni){
+        try {
+            abogado = BD.TablaAbogados.queryAbogadoByDni(dni);
+            ArrayList<String> datos = new ArrayList();
+            datos.add(abogado.getDni());
+            datos.add(abogado.getNombre());
+            datos.add(abogado.getApellidos());
+            datos.add(abogado.getDir());
+            
+            return datos;
+            
+        } catch (Exception ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
    
     public static boolean insertarAbogado(String dni, String nombre, String apellidos, String dir) throws Exception{
         abogado = new Abogado(dni, nombre, apellidos, dir);
@@ -124,8 +163,27 @@ public class Controlador {
         }
         return false;
     }
-
     
+    public static void abrirVEditarAbogado(){
+        try {
+            veditarabogado = new VEditarAbogado(null, true);
+            veditarabogado.setLocationRelativeTo(null);
+            veditarabogado.setVisible(true);
+        } catch (Exception ex) {
+            System.out.println("Problemas al abrir la ventana de editar abogados");
+            System.out.println(ex.getClass() + " " + ex.getMessage());
+        }
+    }
+    
+    public static void abrirVBorrarAbogado() {
+        try {
+            vborrarabogado = new VBorrarAbogados(null, true);
+            vborrarabogado.setLocationRelativeTo(null);
+            vborrarabogado.setVisible(true);
+        } catch (Exception ex) {
+            System.out.println("Problemas al abrir la ventana de borrar abogados");
+        }
+    }
     
     
     public static void abrirVAnadirAbogado() {
@@ -143,10 +201,20 @@ public class Controlador {
             System.out.println("Problemas al abrir la ventana de añadir juicios");
         }
     }
+    
+    public static void abrirVAnadirCliente() {
+        try {
+            vanadircliente = new VAnadirCliente(null, true);
+            vanadircliente.setLocationRelativeTo(null);
+            vanadircliente.setVisible(true);
+        } catch (Exception ex) {
+            System.out.println("Problemas al abrir la ventana de añadir clientes");
+        }
+    }
+    
 
     public static void llenarDesplegableClientes(JComboBox<String> c) throws Exception{
         ArrayList<Cliente> clientes = TablaClientes.queryAllClientes();
-        System.out.println("eo");
         for(Cliente cliente : clientes){
             c.addItem(cliente.getDni());
         }
@@ -154,9 +222,14 @@ public class Controlador {
     
     public static void llenarDesplegableAbogados(JComboBox<String> c) throws Exception{
         ArrayList<Abogado> abogados = TablaAbogados.queryAllAbogados();
-        for(Abogado abogado : abogados){
-            c.addItem(abogado.getDni());
+        if(abogados==null){
+            c.addItem("No hay abogados registrados ebn la BD");
         }
+        else{
+            for(Abogado abogado : abogados){
+                c.addItem(abogado.getDni());
+            }
+    }
     }
 
 
