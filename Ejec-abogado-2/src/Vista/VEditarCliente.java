@@ -14,15 +14,15 @@ import javax.swing.JOptionPane;
  *
  * @author 1gdaw06
  */
-public class VEditarAbogado extends javax.swing.JDialog {
+public class VEditarCliente extends javax.swing.JDialog {
 
     /**
      * Creates new form VAnadirAbogado
      */
-    public VEditarAbogado(java.awt.Frame parent, boolean modal) throws Exception {
+    public VEditarCliente(java.awt.Frame parent, boolean modal) throws Exception {
         super(parent, modal);
         initComponents();
-        Controlador.Controlador.llenarDesplegableAbogados(cbabogados);
+        Controlador.Controlador.llenarDesplegableClientes(cbclientes);
     }
 
     /**
@@ -41,14 +41,14 @@ public class VEditarAbogado extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         tfnombre = new javax.swing.JTextField();
         tfapellidos = new javax.swing.JTextField();
-        tfdir = new javax.swing.JTextField();
+        tfemail = new javax.swing.JTextField();
         beditar = new javax.swing.JButton();
-        cbabogados = new javax.swing.JComboBox<>();
+        cbclientes = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel1.setText("Editar ABOGADOS");
+        jLabel1.setText("Editar Clientes");
 
         jLabel2.setText("DNI:");
 
@@ -56,7 +56,7 @@ public class VEditarAbogado extends javax.swing.JDialog {
 
         jLabel4.setText("Apellidos:");
 
-        jLabel5.setText("Direccion:");
+        jLabel5.setText("E-mail:");
 
         beditar.setText("Editar");
         beditar.addActionListener(new java.awt.event.ActionListener() {
@@ -65,9 +65,9 @@ public class VEditarAbogado extends javax.swing.JDialog {
             }
         });
 
-        cbabogados.addActionListener(new java.awt.event.ActionListener() {
+        cbclientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbabogadosActionPerformed(evt);
+                cbclientesActionPerformed(evt);
             }
         });
 
@@ -78,36 +78,36 @@ public class VEditarAbogado extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(64, 64, 64)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel2)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(33, 33, 33)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(tfapellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tfnombre, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
-                            .addComponent(tfdir, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbabogados, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(173, 173, 173)
                         .addComponent(beditar))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(115, 115, 115)
-                        .addComponent(jLabel1)))
-                .addContainerGap(118, Short.MAX_VALUE))
+                        .addGap(64, 64, 64)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel2)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGap(33, 33, 33)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(tfapellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tfnombre, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                                    .addComponent(tfemail, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cbclientes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                .addContainerGap(129, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(30, 30, 30)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(cbabogados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbclientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfnombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -118,7 +118,7 @@ public class VEditarAbogado extends javax.swing.JDialog {
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfdir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfemail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addGap(18, 18, 18)
                 .addComponent(beditar)
@@ -131,11 +131,11 @@ public class VEditarAbogado extends javax.swing.JDialog {
     private void beditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beditarActionPerformed
         try {
             //validaciones
-            if(Controlador.Controlador.editarAbogado(String.valueOf(cbabogados.getSelectedItem()), tfnombre.getText(), tfapellidos.getText(), tfdir.getText())){
-                JOptionPane.showMessageDialog(this, "Se ha editado el abogado end la BD");
+            if(Controlador.Controlador.editarCliente(String.valueOf(cbclientes.getSelectedItem()), tfnombre.getText(), tfapellidos.getText(), tfemail.getText())){
+                JOptionPane.showMessageDialog(this, "Se ha editado el cliente en la BD");
             }
             else{
-                JOptionPane.showMessageDialog(this, "Problemas a la hora de editar el abogado a la BD");
+                JOptionPane.showMessageDialog(this, "Problemas a la hora de editar el cliente a la BD");
             }
         
         } catch (Exception ex) {
@@ -143,12 +143,12 @@ public class VEditarAbogado extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_beditarActionPerformed
 
-    private void cbabogadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbabogadosActionPerformed
-        ArrayList<String> datos = Controlador.Controlador.pedirDatosAbogado(String.valueOf(cbabogados.getSelectedItem()));
+    private void cbclientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbclientesActionPerformed
+        ArrayList<String> datos = Controlador.Controlador.pedirDatosCliente(String.valueOf(cbclientes.getSelectedItem()));
         tfnombre.setText(datos.get(1)); //En primer lugar tengo el dni, el cual no es posible cambiar por eso empiezo por la seguinda pos
         tfapellidos.setText(datos.get(2));
-        tfdir.setText(datos.get(3));
-    }//GEN-LAST:event_cbabogadosActionPerformed
+        tfemail.setText(datos.get(3));
+    }//GEN-LAST:event_cbclientesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -167,14 +167,16 @@ public class VEditarAbogado extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VEditarAbogado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VEditarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VEditarAbogado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VEditarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VEditarAbogado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VEditarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VEditarAbogado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VEditarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -182,7 +184,7 @@ public class VEditarAbogado extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    VEditarAbogado dialog = new VEditarAbogado(new javax.swing.JFrame(), true);
+                    VEditarCliente dialog = new VEditarCliente(new javax.swing.JFrame(), true);
                     dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                         @Override
                         public void windowClosing(java.awt.event.WindowEvent e) {
@@ -191,7 +193,7 @@ public class VEditarAbogado extends javax.swing.JDialog {
                     });
                     dialog.setVisible(true);
                 } catch (Exception ex) {
-                    Logger.getLogger(VEditarAbogado.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(VEditarCliente.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -199,14 +201,14 @@ public class VEditarAbogado extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton beditar;
-    private javax.swing.JComboBox<String> cbabogados;
+    private javax.swing.JComboBox<String> cbclientes;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JTextField tfapellidos;
-    private javax.swing.JTextField tfdir;
+    private javax.swing.JTextField tfemail;
     private javax.swing.JTextField tfnombre;
     // End of variables declaration//GEN-END:variables
 }

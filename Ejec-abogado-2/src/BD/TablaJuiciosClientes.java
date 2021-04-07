@@ -31,7 +31,7 @@ public class TablaJuiciosClientes {
         
         ResultSet r= ps.executeQuery();
         
-        BD.cerrarBD();
+        
         
         Juicio j = null;
         ArrayList<Juicio> juicios = new ArrayList();
@@ -44,6 +44,9 @@ public class TablaJuiciosClientes {
             j.setEstado(Modelo.estadoJuicio.valueOf(r.getString("estado")));
             juicios.add(j);
         }
+        
+        BD.cerrarBD();
+        
         if(juicios.isEmpty()){
             return null;
         }

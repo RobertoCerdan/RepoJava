@@ -32,7 +32,7 @@ public class TablaClientes {
         
         ResultSet r = ps.executeQuery();
         
-        BD.cerrarBD();
+        
         
         Cliente c = null;
         while(r.next()){
@@ -42,6 +42,8 @@ public class TablaClientes {
             c.setEmail(r.getString("email"));
             c.setJuicios(TablaJuiciosClientes.queryJuicioByDni(r.getString("dni")));
         }
+        
+        BD.cerrarBD();
         
         return c;
     }
@@ -54,7 +56,7 @@ public class TablaClientes {
         
         ResultSet r = ps.executeQuery();
         
-        BD.cerrarBD();
+        
         
         Cliente c = null;
         while(r.next()){
@@ -65,6 +67,8 @@ public class TablaClientes {
             c.setEmail(r.getString("email"));
             c.setJuicios(TablaJuiciosClientes.queryJuicioByDni(r.getString("dni")));
         }
+        
+        BD.cerrarBD(); 
         
         return c;
     }
@@ -121,11 +125,11 @@ public class TablaClientes {
 
     }
     
-    public static boolean removeCliente(String nombre) throws Exception{
+    public static boolean removeCliente(String dni) throws Exception{
         BD.abrirBD();
         con = BD.getCon();
-        PreparedStatement ps = con.prepareStatement("DELETE FROM CLIENTES WHERE UPPER(NOMBRE)=?;");
-        ps.setString(1, nombre);
+        PreparedStatement ps = con.prepareStatement("DELETE FROM CLIENTES WHERE UPPER(dni)=?;");
+        ps.setString(1, dni);
         
         int n = ps.executeUpdate();
         
@@ -141,7 +145,7 @@ public class TablaClientes {
         BD.abrirBD();
         con = BD.getCon();
         
-        PreparedStatement ps = con.prepareStatement("UPDATE TABLE CLIENTES SET NOMBRE=?, APELLIDO=?, EMAIL=? WHERE UPPER(dni)=?;");
+        PreparedStatement ps = con.prepareStatement("UPDATE CLIENTES SET NOMBRE=?, APELLIDOS=?, EMAIL=? WHERE UPPER(dni)=?;");
         ps.setString(1, c.getNombre());
         ps.setString(2, c.getApellidos());
         ps.setString(3, c.getEmail());

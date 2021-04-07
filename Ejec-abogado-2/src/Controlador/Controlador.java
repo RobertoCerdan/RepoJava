@@ -17,7 +17,9 @@ import Vista.VAnadirAbogado;
 import Vista.VAnadirCliente;
 import Vista.VAnadirJuicio;
 import Vista.VBorrarAbogados;
+import Vista.VBorrarCliente;
 import Vista.VEditarAbogado;
+import Vista.VEditarCliente;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -33,6 +35,8 @@ import javax.swing.JComboBox;
 public class Controlador {
     
     public static VAnadirCliente vanadircliente;
+    public static VBorrarCliente vborrarcliente;
+    public static VEditarCliente veditarcliente;
     public static VAnadirJuicio vanadirjuicio;
     public static VAnadirAbogado vanadirabogado;
     public static VBorrarAbogados vborrarabogado;
@@ -73,8 +77,7 @@ public class Controlador {
             return null;
         }
     }
-    
-    
+      
     public static void crearCliente(String dni, String nombre, String apellidos, String email){
          cliente = new Cliente(dni, nombre, apellidos, email);
     }
@@ -164,6 +167,9 @@ public class Controlador {
         return false;
     }
     
+    
+    
+    
     public static void abrirVEditarAbogado(){
         try {
             veditarabogado = new VEditarAbogado(null, true);
@@ -184,13 +190,14 @@ public class Controlador {
             System.out.println("Problemas al abrir la ventana de borrar abogados");
         }
     }
-    
-    
+   
     public static void abrirVAnadirAbogado() {
         vanadirabogado = new VAnadirAbogado(null, true);
         vanadirabogado.setLocationRelativeTo(null);
         vanadirabogado.setVisible(true);
     }
+    
+    
     
     public static void abrirVAnadirJuicio() {
         try {
@@ -198,9 +205,12 @@ public class Controlador {
             vanadirjuicio.setLocationRelativeTo(null);
             vanadirjuicio.setVisible(true);
         } catch (Exception ex) {
+            System.out.println(ex.getClass() + " " + ex.getMessage());
             System.out.println("Problemas al abrir la ventana de añadir juicios");
         }
     }
+    
+    
     
     public static void abrirVAnadirCliente() {
         try {
@@ -212,11 +222,45 @@ public class Controlador {
         }
     }
     
+    public static void abrirVEditarCliente(){
+         try {
+            veditarcliente = new VEditarCliente(null, true);
+            veditarcliente.setLocationRelativeTo(null);
+            veditarcliente.setVisible(true);
+        } catch (Exception ex) {
+            System.out.println("Problemas al abrir la ventana de editar clientes");
+        }
+    }
+    
+    public static void abrirVBorrarCliente(){
+         try {
+            vborrarcliente = new VBorrarCliente(null, true);
+            vborrarcliente.setLocationRelativeTo(null);
+            vborrarcliente.setVisible(true);
+        } catch (Exception ex) {
+            System.out.println("Problemas al abrir la ventana de borrar clientes");
+        }
+    }
+    
+    
+    
+    
+    public static void llenarDesplegableEstados(JComboBox<String> c) throws Exception{
+        for(estadoJuicio estado : Modelo.estadoJuicio.values()){
+            c.addItem(estado.toString());
+        }
+    }
+    
 
     public static void llenarDesplegableClientes(JComboBox<String> c) throws Exception{
         ArrayList<Cliente> clientes = TablaClientes.queryAllClientes();
-        for(Cliente cliente : clientes){
-            c.addItem(cliente.getDni());
+        if(clientes == null){
+            c.addItem("No hay abogados registrados ebn la BD");
+        }
+        else{
+            for(Cliente cliente : clientes){
+                c.addItem(cliente.getDni());
+            }
         }
     }
     
