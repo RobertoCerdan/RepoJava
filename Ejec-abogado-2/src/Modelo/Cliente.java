@@ -87,6 +87,11 @@ public class Cliente {
     public void borrarJuicio(Juicio j){
         this.juicios.remove(j);
     }
+
+    @Override
+    public String toString() {
+        return "Cliente con DNI: " + dni + " y Nombre: " + nombre + " " + apellidos + "\n Email: " + email + " Juicios: " + juicios; 
+    }
     
     
     

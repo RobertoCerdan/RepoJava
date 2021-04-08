@@ -73,6 +73,56 @@ public class TablaClientes {
         return c;
     }
     
+    public static Cliente queryClienteByApellido(String apellido) throws Exception{
+        BD.abrirBD();
+        con = BD.getCon();
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM CLIENTES WHERE UPPER(APELLIDOS)=?;");
+        ps.setString(1, apellido);
+        
+        ResultSet r = ps.executeQuery();
+        
+        
+        
+        Cliente c = null;
+        while(r.next()){
+            c = new Cliente();
+            c.setDni(r.getString("dni"));
+            c.setNombre(r.getString("nombre"));
+            c.setApellidos(r.getString("apellidos"));
+            c.setEmail(r.getString("email"));
+            c.setJuicios(TablaJuiciosClientes.queryJuicioByDni(r.getString("dni")));
+        }
+        
+        BD.cerrarBD(); 
+        
+        return c;
+    }
+    
+    public static Cliente queryClienteByEmail(String email) throws Exception{
+        BD.abrirBD();
+        con = BD.getCon();
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM CLIENTES WHERE UPPER(EMAIL)=?;");
+        ps.setString(1, email);
+        
+        ResultSet r = ps.executeQuery();
+        
+        
+        
+        Cliente c = null;
+        while(r.next()){
+            c = new Cliente();
+            c.setDni(r.getString("dni"));
+            c.setNombre(r.getString("nombre"));
+            c.setApellidos(r.getString("apellidos"));
+            c.setEmail(r.getString("email"));
+            c.setJuicios(TablaJuiciosClientes.queryJuicioByDni(r.getString("dni")));
+        }
+        
+        BD.cerrarBD(); 
+        
+        return c;
+    }
+    
     public static ArrayList<Cliente> queryAllClientes() throws Exception{
         BD.abrirBD();
         con = BD.getCon();

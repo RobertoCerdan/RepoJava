@@ -20,6 +20,7 @@ import Vista.VBorrarAbogados;
 import Vista.VBorrarCliente;
 import Vista.VEditarAbogado;
 import Vista.VEditarCliente;
+import Vista.VMostraDatosCliente;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -34,6 +35,7 @@ import javax.swing.JComboBox;
  */
 public class Controlador {
     
+    public static VMostraDatosCliente vmostrardatoscliente;
     public static VAnadirCliente vanadircliente;
     public static VBorrarCliente vborrarcliente;
     public static VEditarCliente veditarcliente;
@@ -58,13 +60,27 @@ public class Controlador {
         
     }
     
-    public static void pedirCliente(String dni) throws Exception{
-         cliente = TablaClientes.queryClienteByDni(dni);
+    public static void pedirClienteBy(String caso, String clave) throws Exception{
+        switch(caso){
+            case "DNI":
+                cliente = TablaClientes.queryClienteByDni(clave);
+                break;
+            case "Nombre":
+                cliente = BD.TablaClientes.queryClienteByName(clave);
+                break;
+            case "Apellidos":
+                cliente = BD.TablaClientes.queryClienteByApellido(clave);
+                break;
+            case "Email":
+                cliente = BD.TablaClientes.queryClienteByEmail(clave);
+                break;
+                        
+        }
+         
     }
     
     public static ArrayList<String> pedirDatosCliente(String dni){
         try {
-            cliente = TablaClientes.queryClienteByDni(dni);
             ArrayList<String> datos = new ArrayList();
             datos.add(cliente.getDni());
             datos.add(cliente.getNombre());
@@ -76,6 +92,13 @@ public class Controlador {
             Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
+    }
+    
+    public static String pedirStringDatosCliente(){
+        if(cliente != null)
+            return cliente.toString();
+        
+        return null;           
     }
       
     public static void crearCliente(String dni, String nombre, String apellidos, String email){
@@ -101,7 +124,7 @@ public class Controlador {
     
     
     public static boolean insertarJuicio(String id, String dni, LocalDate fechaInicio, LocalDate fechaFin, estadoJuicio estado) throws Exception{
-        pedirCliente(dni);
+        pedirClienteBy("DNI", dni);
         juicio = new Juicio(id, cliente, fechaInicio, fechaFin, estado);
         if(BD.TablaJuicios.insertJuicio(juicio)){
             return true;
@@ -110,7 +133,7 @@ public class Controlador {
     }
     
     public static boolean insertarJuicioConAbogado(String id, String dnicliente, LocalDate fechaInicio, LocalDate fechaFin, estadoJuicio estado, String dni) throws Exception{
-        pedirCliente(dnicliente);
+        pedirClienteBy("DNI", dnicliente);
         pedirAbogado(dni);
         juicio = new Juicio(id, cliente, fechaInicio, fechaFin, estado, abogado);
         if(BD.TablaJuicios.insertJuicio(juicio)){
@@ -242,6 +265,16 @@ public class Controlador {
         }
     }
     
+    public static void abrirVMostraDatosCliente(){
+        try {
+            vmostrardatoscliente = new VMostraDatosCliente(null, true);
+            vmostrardatoscliente.setLocationRelativeTo(null);
+            vmostrardatoscliente.setVisible(true);
+        } catch (Exception ex) {
+            System.out.println("Problemas al abrir la ventana de mostrar datos clientes");
+        }
+    }
+    
     
     
     
@@ -250,8 +283,6 @@ public class Controlador {
             c.addItem(estado.toString());
         }
     }
-    
-
     public static void llenarDesplegableClientes(JComboBox<String> c) throws Exception{
         ArrayList<Cliente> clientes = TablaClientes.queryAllClientes();
         if(clientes == null){
@@ -263,7 +294,6 @@ public class Controlador {
             }
         }
     }
-    
     public static void llenarDesplegableAbogados(JComboBox<String> c) throws Exception{
         ArrayList<Abogado> abogados = TablaAbogados.queryAllAbogados();
         if(abogados==null){
