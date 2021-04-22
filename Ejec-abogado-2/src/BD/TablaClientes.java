@@ -32,16 +32,18 @@ public class TablaClientes {
         
         ResultSet r = ps.executeQuery();
         
-        BD.cerrarBD();
+        
         
         Cliente c = null;
-        if(r.next()){
+        while(r.next()){
             c = new Cliente();
             c.setNombre(r.getString("nombre"));
-            c.setApellidos(r.getString("apellido"));
+            c.setApellidos(r.getString("apellidos"));
             c.setEmail(r.getString("email"));
             c.setJuicios(TablaJuiciosClientes.queryJuicioByDni(r.getString("dni")));
         }
+        
+        BD.cerrarBD();
         
         return c;
     }
@@ -54,17 +56,69 @@ public class TablaClientes {
         
         ResultSet r = ps.executeQuery();
         
-        BD.cerrarBD();
+        
         
         Cliente c = null;
-        if(r.next()){
+        while(r.next()){
             c = new Cliente();
             c.setDni(dni);
             c.setNombre(r.getString("nombre"));
-            c.setApellidos(r.getString("apellido"));
+            c.setApellidos(r.getString("apellidos"));
             c.setEmail(r.getString("email"));
             c.setJuicios(TablaJuiciosClientes.queryJuicioByDni(r.getString("dni")));
         }
+        
+        BD.cerrarBD(); 
+        
+        return c;
+    }
+    
+    public static Cliente queryClienteByApellido(String apellido) throws Exception{
+        BD.abrirBD();
+        con = BD.getCon();
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM CLIENTES WHERE UPPER(APELLIDOS)=?;");
+        ps.setString(1, apellido);
+        
+        ResultSet r = ps.executeQuery();
+        
+        
+        
+        Cliente c = null;
+        while(r.next()){
+            c = new Cliente();
+            c.setDni(r.getString("dni"));
+            c.setNombre(r.getString("nombre"));
+            c.setApellidos(r.getString("apellidos"));
+            c.setEmail(r.getString("email"));
+            c.setJuicios(TablaJuiciosClientes.queryJuicioByDni(r.getString("dni")));
+        }
+        
+        BD.cerrarBD(); 
+        
+        return c;
+    }
+    
+    public static Cliente queryClienteByEmail(String email) throws Exception{
+        BD.abrirBD();
+        con = BD.getCon();
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM CLIENTES WHERE UPPER(EMAIL)=?;");
+        ps.setString(1, email);
+        
+        ResultSet r = ps.executeQuery();
+        
+        
+        
+        Cliente c = null;
+        while(r.next()){
+            c = new Cliente();
+            c.setDni(r.getString("dni"));
+            c.setNombre(r.getString("nombre"));
+            c.setApellidos(r.getString("apellidos"));
+            c.setEmail(r.getString("email"));
+            c.setJuicios(TablaJuiciosClientes.queryJuicioByDni(r.getString("dni")));
+        }
+        
+        BD.cerrarBD(); 
         
         return c;
     }
@@ -77,19 +131,22 @@ public class TablaClientes {
         
         ResultSet r = ps.executeQuery();
         
-        BD.cerrarBD();
         
         ArrayList<Cliente> clientes= new ArrayList();
         Cliente c = null;
-        if(r.next()){
+        while(r.next()){
             c = new Cliente();
             c.setDni(r.getString("dni"));
             c.setNombre(r.getString("nombre"));
-            c.setApellidos(r.getString("apellido"));
+            c.setApellidos(r.getString("apellidos"));
             c.setEmail(r.getString("email"));
             c.setJuicios(TablaJuiciosClientes.queryJuicioByDni(r.getString("dni")));
             clientes.add(c);
         }
+        
+        BD.cerrarBD();
+        
+        
         if(!clientes.isEmpty()){
             return clientes;
         }
@@ -100,11 +157,12 @@ public class TablaClientes {
     public static boolean insertCliente(Cliente c) throws Exception{
         BD.abrirBD();
         con = BD.getCon();
-        PreparedStatement ps = con.prepareStatement("INSERT INTO CLIENTES VALUES (?, ?, ?);");
+        PreparedStatement ps = con.prepareStatement("INSERT INTO CLIENTES VALUES (?, ?, ?, ?);");
         
-        ps.setString(1, c.getNombre());
-        ps.setString(2, c.getApellidos());
-        ps.setString(3, c.getEmail());
+        ps.setString(1, c.getDni());
+        ps.setString(2, c.getNombre());
+        ps.setString(3, c.getApellidos());
+        ps.setString(4, c.getEmail());
                
         int n = ps.executeUpdate();
         
@@ -117,11 +175,11 @@ public class TablaClientes {
 
     }
     
-    public static boolean removeCliente(String nombre) throws Exception{
+    public static boolean removeCliente(String dni) throws Exception{
         BD.abrirBD();
         con = BD.getCon();
-        PreparedStatement ps = con.prepareStatement("DELETE FROM CLIENTES WHERE UPPER(NOMBRE)=?;");
-        ps.setString(1, nombre);
+        PreparedStatement ps = con.prepareStatement("DELETE FROM CLIENTES WHERE UPPER(dni)=?;");
+        ps.setString(1, dni);
         
         int n = ps.executeUpdate();
         
@@ -137,7 +195,7 @@ public class TablaClientes {
         BD.abrirBD();
         con = BD.getCon();
         
-        PreparedStatement ps = con.prepareStatement("UPDATE TABLE CLIENTES SET NOMBRE=?, APELLIDO=?, EMAIL=? WHERE UPPER(dni)=?;");
+        PreparedStatement ps = con.prepareStatement("UPDATE CLIENTES SET NOMBRE=?, APELLIDOS=?, EMAIL=? WHERE UPPER(dni)=?;");
         ps.setString(1, c.getNombre());
         ps.setString(2, c.getApellidos());
         ps.setString(3, c.getEmail());
